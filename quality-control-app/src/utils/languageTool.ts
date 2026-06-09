@@ -3,17 +3,18 @@ export async function checkGrammar(text: string) {
 
   try {
     // Pointing directly to your local Java server!
-    const response = await fetch('http://localhost:8081/v2/check', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      // 'en-US' checks for standard American English rules
-      body: new URLSearchParams({
-        text: text,
-        language: 'en-US', 
-      }),
-    });
+    // Inside src/utils/languageTool.ts
+const response = await fetch('https://parade-junkie-shampoo.ngrok-free.dev', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'ngrok-skip-browser-warning': 'true' // This bypasses the free-tier warning page!
+  },
+  body: new URLSearchParams({
+    text: textToCheck,
+    language: 'en-US'
+  })
+});
 
     const data = await response.json();
     return data.matches || [];
