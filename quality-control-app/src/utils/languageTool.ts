@@ -11,7 +11,7 @@ const response = await fetch('https://parade-junkie-shampoo.ngrok-free.dev', {
     'ngrok-skip-browser-warning': 'true' // This bypasses the free-tier warning page!
   },
   body: new URLSearchParams({
-    text: textToCheck,
+    text: text,
     language: 'en-US'
   })
 });
