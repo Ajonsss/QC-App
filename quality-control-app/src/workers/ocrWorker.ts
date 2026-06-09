@@ -54,7 +54,7 @@ export async function processImageWithOCR_API(imageBlob: Blob): Promise<string> 
     // 4. Build API Request with Power-Ups
     const formData = new FormData();
     // DON'T FORGET TO PASTE YOUR ACTUAL OCR.SPACE API KEY HERE!
-    formData.append("apikey", "K81448404688957"); 
+    formData.append("apikey", process.env.NEXT_PUBLIC_OCR_API_KEY || "YOUR_FALLBACK_KEY"); 
     formData.append("file", compressedBlob, `image.${fileType.toLowerCase()}`);
     formData.append("filetype", fileType);
     
