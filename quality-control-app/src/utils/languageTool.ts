@@ -1,47 +1,24 @@
-// src/utils/languageTool.ts
-
-export interface GrammarError {
-  message: string;
-  context: {
-    text: string;
-    offset: number;
-    length: number;
-  };
-  replacements: { value: string }[];
-  rule: {
-    description: string;
-    issueType: string;
-  };
-}
-
-/**
- * Sends text to the local LanguageTool server for grammar checking.
- */
-export async function checkGrammar(text: string): Promise<GrammarError[]> {
-  if (!text || text.trim() === '') return [];
+export async function checkGrammar(text: string) {
+  if (!text || text.trim() === "") return [];
 
   try {
-    // We use URLSearchParams because the API expects x-www-form-urlencoded data
-    const params = new URLSearchParams();
-    params.append('text', text);
-    params.append('language', 'en-US'); // Change this if checking other languages
-
+    // Pointing directly to your local Java server!
     const response = await fetch('http://localhost:8081/v2/check', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: params.toString(),
+      // 'en-US' checks for standard American English rules
+      body: new URLSearchParams({
+        text: text,
+        language: 'en-US', 
+      }),
     });
-
-    if (!response.ok) {
-      throw new Error(`LanguageTool API Error: ${response.statusText}`);
-    }
 
     const data = await response.json();
     return data.matches || [];
   } catch (error) {
-    console.error("Failed to check grammar:", error);
+    console.error("LanguageTool local server error:", error);
     return [];
   }
 }
